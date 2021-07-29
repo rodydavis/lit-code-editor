@@ -105,6 +105,7 @@ export class CodeEditor extends LitElement {
       value: this.getCode(),
       language: this.getLang(),
       theme: this.getTheme(),
+      automaticLayout: true,
     });
     window
       .matchMedia("(prefers-color-scheme: dark)")
