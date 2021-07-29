@@ -34,6 +34,7 @@ self.MonacoEnvironment = {
 export class CodeEditor extends LitElement {
   private container: Ref<HTMLElement> = createRef();
   editor?: monaco.editor.IStandaloneCodeEditor;
+  @property({ type: Boolean, attribute: "readonly" }) readOnly?: boolean;
   @property() theme?: string;
   @property() language?: string;
   @property() code?: string;
@@ -100,12 +101,25 @@ export class CodeEditor extends LitElement {
     return value;
   }
 
+  setReadOnly(value: boolean) {
+    this.readOnly = value;
+    this.setOptions({ readOnly: value });
+  }
+
+  setOptions(value: monaco.editor.IStandaloneEditorConstructionOptions) {
+    this.editor!.updateOptions(value);
+  }
+
   firstUpdated() {
     this.editor = monaco.editor.create(this.container.value!, {
       value: this.getCode(),
       language: this.getLang(),
       theme: this.getTheme(),
       automaticLayout: true,
+      readOnly: this.readOnly ?? false,
+    });
+    this.editor.getModel()!.onDidChangeContent(() => {
+      this.dispatchEvent(new CustomEvent("change", { detail: {} }));
     });
     window
       .matchMedia("(prefers-color-scheme: dark)")
