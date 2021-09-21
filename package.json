@@ -12,7 +12,7 @@
     "serve": "tsc && vite preview"
   },
   "dependencies": {
-    "lit": "^2.0.0-rc.2",
+    "lit": "*",
     "monaco-editor": "^0.26.1"
   },
   "devDependencies": {
